@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker: 
-      - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
+      - image: circleci/cci-demo-docker-primary:0.0.2 # the primary container, where your job's commands are run
     steps:
       - checkout # check out the code in the project directory
       - run:
@@ -11,4 +11,9 @@ jobs:
             set -x
             curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
+
+            | set -x 
+            curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose 
+            chmod +x /usr/local/bin/docker-compose
+      - setup_remote_docker
       - run: echo chmod +x script.sh && ./script.sh # run the `echo` command
