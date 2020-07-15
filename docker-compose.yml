@@ -1,0 +1,23 @@
+version: '3.3'
+
+volumes:
+ consul_data:
+  driver: local
+
+services:
+
+### CONSUL
+ consul:
+  image: bitnami/consul
+  container_name: consul
+  ports:
+   - 8500:8500
+   - 8300:8300
+   - 8301:8301
+   - 8301:8301/udp
+   - 8600:8600
+   - 8600:8600/udp
+  expose:
+    - 8500
+  volumes:
+   - 'consul_data:/bitnami/consul'
