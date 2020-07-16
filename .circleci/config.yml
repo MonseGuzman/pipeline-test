@@ -7,7 +7,7 @@
 #       - run:
 #           name: Test variables
 #           command: | 
-            echo $test
+#            echo $test
       # - checkout # check out the code in the project directory
       # - run:
       #     name: Install Docker Compose
