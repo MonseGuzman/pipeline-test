@@ -1,9 +1,12 @@
 #!/bin/bash
+ 
+version=$(git rev-list --count circleci-project-setup)
+finalVersion=''
 
-docker-compose build
-
-docker-compose up -d
-
-chmod +x kv.sh
-
-./kv.sh 
+if [ "$version" -le 20 ];
+then
+    echo "$version"
+else
+    finalVersion = ".$version"
+    echo "finalVersion"
+fi
