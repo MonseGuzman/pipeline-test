@@ -28,19 +28,14 @@
 
 
 version: 2.1
-orbs:
-  github-release: h-matsuo/github-release@0.1.1
-jobs:
-  build:
-    description: Create dummy file and publish a new release tagged `vX.Y.Z`.
-    executor: github-release/default
-    steps:
-      - run:
-          command: |
-            mkdir artifacts
-            echo dummy > ./artifacts/file
-      - github-release/create:
-          tag: vX.Y.Z
-          title: Version vX.Y.Z
-          description: This release is version vX.Y.Z .
-          file-path: ./artifacts/file
+publish-github-release:
+  docker:
+    - image: cibuilds/github:0.10
+  steps:
+    - attach_workspace:
+        at: ./artifacts
+    - run:
+        name: "Publish Release on GitHub"
+        command: |
+          VERSION=$(my-binary --version)
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts/
