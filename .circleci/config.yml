@@ -1,14 +1,13 @@
 version: 2.1
-# jobs:
-#   build:
-#     docker: 
-#       - image: circleci/cci-demo-docker-primary:0.0.2 # the primary container, where your job's commands are run
-#     steps:
-#       - run:
-#           name: Test variables
-#           command: | 
-#            echo $test
-      # - checkout # check out the code in the project directory
+jobs:
+  build:
+    docker: 
+      - image: circleci/cci-demo-docker-primary:0.0.2 # the primary container, where your job's commands are run
+    steps:
+      - checkout # check out the code in the project directory
+      - run:
+          name: "Publish Release on GitHub"
+          command: echo chmod +x version-git.sh && ./version-git.sh
       # - run:
       #     name: Install Docker Compose
       #     command: |
@@ -24,21 +23,3 @@ version: 2.1
       #       docker build -t circleci/cci-demo-docker:$TAG .
       #       docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       #       docker push circleci/cci-demo-docker:$TAG
-
-machine:
-  node:
-    version: 6.2.0
-  environment:
-      PROJECT_NAME: pipelinne-test
-dependencies:
-  pre:
-    - go get github.com/aktau/github-release
-    - npm install github-release-notes -g
-deployment:
-  release:
-    tag: /v[0-9]+(\.[0-9]+)*/
-    commands:
-      - zip -r $CIRCLE_ARTIFACTS/$PROJECT_NAME-$CIRCLE_TAG.zip dist/*
-      - git config user.name $CIRCLE_PROJECT_USERNAME
-      - gren --override --data-source=commits
-      - github-release upload --user $CIRCLE_PROJECT_USERNAME --repo $CIRCLE_PROJECT_REPONAME --tag $CIRCLE_TAG --name $CIRCLE_PROJECT_REPONAME"."$CIRCLE_TAG"-build-"$CIRCLE_BUILD_NUM".zip" --file $CIRCLE_ARTIFACTS/$PROJECT_NAME-$CIRCLE_TAG.zip
