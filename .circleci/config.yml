@@ -2,12 +2,25 @@ version: 2.1
 jobs:
   build:
     docker: 
-      - image: circleci/cci-demo-docker-primary:0.0.2 # the primary container, where your job's commands are run
+      - image: circleci/cci-demo-docker-primary:0.0.2
     steps:
       - checkout # check out the code in the project directory
+      - setup_remote_docker    
       - run:
-          name: "Publish Release on GitHub"
-          command: echo chmod +x version-git.sh && ./version-git.sh
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+            docker --version
+      - run:
+          name: dockerfile test
+          command: | 
+            ls 
+            docker build .
+
       # - run:
       #     name: Install Docker Compose
       #     command: |
