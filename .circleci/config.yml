@@ -12,4 +12,4 @@ jobs:
             chmod +x version-git.sh 
             VERSION=`./version-git.sh`
             # Tagging
-            git tag -a v$VERSION -m "version $VERSION"
+            # git tag -a v$VERSION -m "version $VERSION"
