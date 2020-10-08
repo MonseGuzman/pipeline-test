@@ -3,7 +3,7 @@ workflows:
   project:
     jobs:
       - "build"
-      - "release"
+      - "release":
           requires:
             - "build"
 jobs:
