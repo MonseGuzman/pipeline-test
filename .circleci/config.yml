@@ -14,13 +14,14 @@ jobs:
       - checkout # check out the code in the project directory
       - setup_remote_docker    
       - run:
-          name: Create a new release
+          name: Create a new tag
           command: |
-            chmod +x version-git.sh 
-            export VERSION=`./version-git.sh`
-            # Tagging
-            git tag -a $VERSION -m "version $VERSION"
-            git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/MonseGuzman/pipeline-test.git" --tags
+            echo "does not work, for now"
+            # chmod +x version-git.sh 
+            # export VERSION=`./version-git.sh`
+            # # Tagging
+            # git tag -a $VERSION -m "version $VERSION"
+            # git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/MonseGuzman/pipeline-test.git" --tags
   "release":
     docker:
       - image: circleci/golang:latest
