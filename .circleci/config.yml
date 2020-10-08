@@ -3,7 +3,9 @@ workflows:
   project:
     jobs:
       - "build"
-      - "release"
+      - "release":
+          requires:
+            - "build"
 jobs:
   "build":
     docker: 
@@ -20,7 +22,7 @@ jobs:
             git tag -a $VERSION -m "version $VERSION"
   "release":
     docker:
-      - image: cimg/go
+      - image: circleci/golang:latest
     steps:
       - checkout
       - run:
