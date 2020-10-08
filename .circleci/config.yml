@@ -39,4 +39,4 @@ jobs:
           name: Create release
           command: |
             chmod +x release.sh
-            ./release
+            ./release.sh
