@@ -3,7 +3,7 @@ workflows:
   project:
     jobs:
       - "build"
-      - "release":
+      - "release"
           requires:
             - "build"
 jobs:
@@ -20,6 +20,7 @@ jobs:
             export VERSION=`./version-git.sh`
             # Tagging
             git tag -a $VERSION -m "version $VERSION"
+            git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/MonseGuzman/pipeline-test.git" --tags
   "release":
     docker:
       - image: circleci/golang:latest
