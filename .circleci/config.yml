@@ -12,4 +12,15 @@ jobs:
             chmod +x version-git.sh 
             VERSION=`./version-git.sh`
             # Tagging
-            # git tag -a v$VERSION -m "version $VERSION"
+            git tag -a v$VERSION -m "version $VERSION"
+            
+            OWNER=MonseGuzman
+            REPOSITORY=pipeline-test
+          
+            curl --data '{"tag_name": "v$VERSION",
+                            "target_commitish": "master",
+                            "name": "v$VERSION",
+                            "body": "Release of version $VERSION",
+                            "draft": false,
+                            "prerelease": false}' \
+                https://api.github.com/repos/$OWNER/$REPOSITORY/releases?access_token=${GITHUB_TOKEN}
