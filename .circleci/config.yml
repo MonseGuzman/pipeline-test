@@ -1,6 +1,11 @@
 version: 2.1
+workflows:
+  project:
+    jobs:
+      - "build"
+      - "release"
 jobs:
-  build:
+  "build":
     docker: 
       - image: circleci/cci-demo-docker-primary:0.0.2
     steps:
@@ -13,14 +18,21 @@ jobs:
             export VERSION=`./version-git.sh`
             # Tagging
             git tag -a $VERSION -m "version $VERSION"
-            
-            export OWNER=MonseGuzman
-            export REPOSITORY=pipeline-test
-          
-            curl --data '{"tag_name": "$VERSION",
-                            "target_commitish": "master",
-                            "name": "$VERSION",
-                            "body": "Release of version $VERSION",
-                            "draft": false,
-                            "prerelease": false}' \
-                https://api.github.com/repos/$OWNER/$REPOSITORY/releases?access_token=${GITHUB_TOKEN}
+  "release":
+    docker:
+      - image: cimg/go
+    steps:
+      - checkout
+      - run:
+          name: Export environment variables
+          command: |
+            echo export $(grep -v '^#' dwarf.config | xargs) >> $BASH_ENV
+      - run:
+          name: Install package
+          command: |
+            go get github.com/github-release/github-release
+      - run:
+          name: Create release
+          command: |
+            chmod +x release.sh
+            ./release
