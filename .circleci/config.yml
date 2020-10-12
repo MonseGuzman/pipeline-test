@@ -6,6 +6,8 @@ workflows:
       - "release":
           requires:
             - "build"
+orbs:
+  github-release: h-matsuo/github-release@0.1.1
 jobs:
   "build":
     docker: 
@@ -23,20 +25,33 @@ jobs:
             # git tag -a $VERSION -m "version $VERSION"
             # git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/MonseGuzman/pipeline-test.git" --tags
   "release":
-    docker:
-      - image: circleci/golang:latest
+    # docker:
+    #   - image: circleci/golang:latest
+    # steps:
+    #   - checkout
+    #   - run:
+    #       name: Export environment variables
+    #       command: |
+    #         echo export $(grep -v '^#' dwarf.config | xargs) >> $BASH_ENV
+    #   - run:
+    #       name: Install package
+    #       command: |
+    #         go get github.com/github-release/github-release
+    #   - run:
+    #       name: Create release
+    #       command: |
+    #         chmod +x release.sh
+    #         ./release.sh
+
+    description: Create dummy file and publish a new release tagged `vX.Y.Z`.
+    executor: github-release/default
     steps:
-      - checkout
       - run:
-          name: Export environment variables
           command: |
-            echo export $(grep -v '^#' dwarf.config | xargs) >> $BASH_ENV
-      - run:
-          name: Install package
-          command: |
-            go get github.com/github-release/github-release
-      - run:
-          name: Create release
-          command: |
-            chmod +x release.sh
-            ./release.sh
+            mkdir artifacts
+            echo dummy > ./artifacts/file
+      - github-release/create:
+          tag: vX.Y.Z
+          title: Version vX.Y.Z
+          description: hey, esto es un release o tag?
+          file-path: ./artifacts/file
