@@ -25,33 +25,21 @@ jobs:
             # git tag -a $VERSION -m "version $VERSION"
             # git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/MonseGuzman/pipeline-test.git" --tags
   "release":
-    # docker:
-    #   - image: circleci/golang:latest
-    # steps:
-    #   - checkout
-    #   - run:
-    #       name: Export environment variables
-    #       command: |
-    #         echo export $(grep -v '^#' dwarf.config | xargs) >> $BASH_ENV
-    #   - run:
-    #       name: Install package
-    #       command: |
-    #         go get github.com/github-release/github-release
-    #   - run:
-    #       name: Create release
-    #       command: |
-    #         chmod +x release.sh
-    #         ./release.sh
-
-    description: Create dummy file and publish a new release tagged `vX.Y.Z`.
+    description: Create dummy file and publish a new release.
     executor: github-release/default
     steps:
+      - checkout
       - run:
+          name: Export environment variables
+          command: |
+            echo export $(grep -v '^#' dwarf.config | xargs) >> $BASH_ENV
+      - run:
+          name: Create artifacts
           command: |
             mkdir artifacts
-            echo dummy > ./artifacts/file
+            echo dummy > ./artifacts/release
       - github-release/create:
-          tag: vX.Y.Z
-          title: Version vX.Y.Z
+          tag: $CI_VERSION
+          title: This is the release $CI_VERSION
           description: hey, esto es un release o tag?
-          file-path: ./artifacts/file
+          file-path: ./artifacts/release
