@@ -26,5 +26,5 @@ jobs:
       - github-release/create:
           tag: $VERSION
           title: version $VERSION
-          description: $DESCRI
+          description: $DESCR
           # file-path: ./artifacts/file
