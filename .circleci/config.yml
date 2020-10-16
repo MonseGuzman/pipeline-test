@@ -23,8 +23,12 @@ jobs:
 
             echo "export VERSION=${VER}" >> $BASH_ENV
             echo "export DESCR='${DESCRI}'" >> $BASH_ENV
-      - github-release/create:
-          tag: $VERSION
-          title: version $VERSION
-          description: $DESCR
+      - run:
+          name: check
+          command: |
+            echo $CIRCLE_PR_NUMBER
+      # - github-release/create:
+      #     tag: $VERSION
+      #     title: version $VERSION
+      #     description: $DESCR
           # file-path: ./artifacts/file
