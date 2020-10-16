@@ -2,8 +2,7 @@ version: 2.1
 workflows:
   project:
     jobs:
-      - "release":
-          requires:
+      - "release"
 orbs:
   github-release: h-matsuo/github-release@0.1.1
 jobs:
@@ -25,5 +24,5 @@ jobs:
       - github-release/create:
           tag: $VERSION
           title: $VERSION
-          description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          description: echo `cat description.txt`
           # file-path: ./artifacts/release
