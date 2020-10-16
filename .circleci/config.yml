@@ -2,27 +2,29 @@ version: 2.1
 workflows:
   project:
     jobs:
-      - "release"
+      - "build"
 orbs:
   github-release: h-matsuo/github-release@0.1.1
 jobs:
-  "release":
+  "build":
     description: Create a publish a new release.
     executor: github-release/default
     steps:
       - checkout
+      # - run:
+      #     command: |
+      #       mkdir artifacts
+      #       echo dummy > ./artifacts/file
       - run:
           name: Export environment variables
           command: |
-            chmod +x version-git.sh
-            echo export $(VERSION=`./version-tag.sh`) >> $BASH_ENV
-      # - run:
-      #     name: Create artifacts
-      #     command: |
-      #       mkdir artifacts
-      #       echo dummy > ./artifacts/release
+            export VER=$(git tag | sort -V | tail -1)
+            export DESCRI=`cat description.txt`
+
+            echo "export VERSION=${VER}" >> $BASH_ENV
+            echo "export DESCR='${DESCRI}'" >> $BASH_ENV
       - github-release/create:
           tag: $VERSION
-          title: $VERSION
-          description: echo `cat description.txt`
-          # file-path: ./artifacts/release
+          title: version $VERSION
+          description: $DESCRI
+          # file-path: ./artifacts/file
