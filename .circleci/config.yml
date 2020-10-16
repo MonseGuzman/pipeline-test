@@ -1,15 +1,34 @@
 version: 2.1
+workflows:
+  project:
+    jobs:
+      - "build"
+orbs:
+  github-release: h-matsuo/github-release@0.1.1
 jobs:
-  build:
-    docker: 
-      - image: circleci/cci-demo-docker-primary:0.0.2
+  "build":
+    description: Create a publish a new release.
+    executor: github-release/default
     steps:
-      - checkout # check out the code in the project directory
-      - setup_remote_docker    
+      - checkout
+      # - run:
+      #     command: |
+      #       mkdir artifacts
+      #       echo dummy > ./artifacts/file
       - run:
-          name: Install Docker client
+          name: Export environment variables
           command: |
-            chmod +x version-git.sh 
-            VERSION=`./version-git.sh`
-            # Tagging
-            git tag -a v$VERSION -m "version $VERSION"
+            export VER=$(git tag | sort -V | tail -1)
+            export DESCRI=`cat description.txt`
+
+            echo "export VERSION=${VER}" >> $BASH_ENV
+            echo "export DESCR='${DESCRI}'" >> $BASH_ENV
+      - run:
+          name: check
+          command: |
+            echo $CIRCLE_PR_NUMBER
+      # - github-release/create:
+      #     tag: $VERSION
+      #     title: version $VERSION
+      #     description: $DESCR
+          # file-path: ./artifacts/file
