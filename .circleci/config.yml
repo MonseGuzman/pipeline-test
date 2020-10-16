@@ -2,29 +2,11 @@ version: 2.1
 workflows:
   project:
     jobs:
-      - "build"
       - "release":
-          type: approval
           requires:
-            - "build"
 orbs:
   github-release: h-matsuo/github-release@0.1.1
 jobs:
-  "build":
-    docker: 
-      - image: circleci/cci-demo-docker-primary:0.0.2
-    steps:
-      - checkout # check out the code in the project directory
-      - setup_remote_docker    
-      - run:
-          name: Create a new tag
-          command: |
-            echo "does not work, for now"
-            # chmod +x version-git.sh 
-            # export VERSION=`./version-git.sh`
-            # # Tagging
-            # git tag -a $VERSION -m "version $VERSION"
-            # git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/MonseGuzman/pipeline-test.git" --tags
   "release":
     description: Create a publish a new release.
     executor: github-release/default
@@ -33,14 +15,15 @@ jobs:
       - run:
           name: Export environment variables
           command: |
-            echo export $(grep -v '^#' dwarf.config | xargs) >> $BASH_ENV
-      - run:
-          name: Create artifacts
-          command: |
-            mkdir artifacts
-            echo dummy > ./artifacts/release
+            chmod +x version-git.sh
+            echo export $(VERSION=`./version-tag.sh`) >> $BASH_ENV
+      # - run:
+      #     name: Create artifacts
+      #     command: |
+      #       mkdir artifacts
+      #       echo dummy > ./artifacts/release
       - github-release/create:
-          tag: $CI_VERSION
-          title: This is the release $CI_VERSION
-          description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          file-path: ./artifacts/release
+          tag: $VERSION
+          title: $VERSION
+          description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          # file-path: ./artifacts/release
