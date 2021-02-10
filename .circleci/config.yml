@@ -11,10 +11,6 @@ jobs:
     executor: github-release/default
     steps:
       - checkout
-      # - run:
-      #     command: |
-      #       mkdir artifacts
-      #       echo dummy > ./artifacts/file
       - run:
           name: Export environment variables
           command: |
