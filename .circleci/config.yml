@@ -16,6 +16,9 @@ jobs:
           command: |
             export VER=$(git tag | sort -V | tail -1)
             export DESCRI=`cat description.txt`
+            
+            echo $CIRCLE_PROJECT_REPONAME
+            echo $CIRCLE_PROJECT_USERNAME
 
             echo "export VERSION=${VER}" >> $BASH_ENV
             echo "export DESCR='${DESCRI}'" >> $BASH_ENV
