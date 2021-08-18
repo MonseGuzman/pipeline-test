@@ -1,2 +1,2 @@
-Lorem Ipsum is simply dummy text of the printing and typesetting 
-industry
+This is the full initial release of the IIDK frame work supporting AWS and AMI
+creation.
