@@ -47,7 +47,7 @@ jobs:
               name: Export environment variables
               command: |
                   export VER=$(git tag | sort -V | tail -1)
-                  export DESCRI=`cat release_description.txt`
+                  export DESCRI=`cat description.txt`
                   echo "export VERSION=${VER}" >> $BASH_ENV
                   echo "export DESCR='${DESCRI}'" >> $BASH_ENV
           - github-release/create:
