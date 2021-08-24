@@ -35,11 +35,11 @@ jobs:
                   echo $CIRCLE_PROJECT_REPONAME
                   echo $CIRCLE_PROJECT_USERNAME
                   git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git" --tags
-          - run:
-              name: Test
-              command: | 
-                  chmod +x tfe-private-module.sh
-                  ./tfe-private-module.sh
+        #   - run:
+        #       name: Publishing module
+        #       command: | 
+        #           chmod +x tfe-private-module.sh
+        #           ./tfe-private-module.sh
   "release":
       description: Create a publish a new release.
       executor: github-release/default
