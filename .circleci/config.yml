@@ -29,7 +29,7 @@ jobs:
           - run:
               name: Run Bump Tag
               command: |
-                  chmod +x version-tag.sh
+                  chmod +x version-git.sh
                   export VERSION=`./version-git.sh`
                   git tag -a $VERSION -m "version: $VERSION"
           - run:
